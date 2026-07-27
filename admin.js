@@ -5,7 +5,7 @@ const API = "/api/admin";
 // pelo domínio público real depois do deploy.
 const PUBLIC_SITE_URL = ["localhost", "127.0.0.1"].includes(location.hostname)
   ? `${location.protocol}//${location.hostname}:8934`
-  : "https://SEU-SITE-AQUI.com";
+  : "https://enxoval-da-mari.vercel.app";
 
 let categoriasCache = [];
 let productsCache = [];
