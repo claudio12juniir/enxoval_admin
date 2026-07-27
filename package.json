@@ -1,0 +1,20 @@
+{
+  "name": "enxoval-admin",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Painel admin do Enxoval: cola o link da Amazon, busca imagem/descrição/vídeo/preço e publica no catálogo. Serverless, pronto para Vercel.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node local-server.js",
+    "dev": "node --watch local-server.js",
+    "add-produto": "node scripts/add-produto.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.6.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

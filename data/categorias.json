@@ -1,0 +1,8 @@
+[
+  { "slug": "cozinha", "label": "Cozinha", "icon": "🍳" },
+  { "slug": "cama-mesa-banho", "label": "Cama, Mesa e Banho", "icon": "🛏️" },
+  { "slug": "organizacao", "label": "Organização", "icon": "🗄️" },
+  { "slug": "eletrodomesticos", "label": "Eletrodomésticos", "icon": "🔌" },
+  { "slug": "decoracao", "label": "Decoração", "icon": "🎨" },
+  { "slug": "lavanderia", "label": "Lavanderia", "icon": "🧺" }
+]
