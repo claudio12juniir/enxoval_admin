@@ -28,7 +28,11 @@ app.use("/api/public", publicRoutes);
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
   console.error(err);
-  res.status(500).json({ error: "Erro interno no servidor." });
+  // As mensagens que a gente mesmo lança (lib/store.js, lib/amazonScraper.js)
+  // já são frases seguras pra mostrar pro admin — sem isso, um erro claro
+  // tipo "conecte o Blob Store" virava um genérico "erro interno" sem pista
+  // nenhuma de onde procurar.
+  res.status(500).json({ error: err.message || "Erro interno no servidor." });
 });
 
 module.exports = app;
