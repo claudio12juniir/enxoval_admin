@@ -1,11 +1,8 @@
 const express = require("express");
 const { scrapeProduct, extractAsin } = require("../lib/amazonScraper");
 const store = require("../lib/store");
-const auth = require("../lib/auth");
 
 const router = express.Router();
-
-const isProd = process.env.NODE_ENV === "production";
 
 // Express 4 não encaminha rejeições de promise pra próxima middleware
 // sozinho — sem isso, um erro (ex: Blob não configurado) travaria a
@@ -13,49 +10,6 @@ const isProd = process.env.NODE_ENV === "production";
 function asyncHandler(fn) {
   return (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 }
-
-function setSessionCookie(res, token) {
-  res.cookie(auth.COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: isProd,
-    maxAge: auth.SESSION_TTL_MS,
-  });
-}
-
-router.post("/login", (req, res) => {
-  const { password } = req.body || {};
-
-  let valid;
-  try {
-    valid = auth.checkPassword(password);
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-
-  if (!valid) {
-    return res.status(401).json({ error: "Senha incorreta." });
-  }
-
-  const token = auth.createSession();
-  setSessionCookie(res, token);
-  res.json({ ok: true });
-});
-
-router.post("/logout", (req, res) => {
-  // Sessão é sem estado (assinada no próprio cookie) — não há nada pra
-  // invalidar no servidor, só apagar o cookie do navegador.
-  res.clearCookie(auth.COOKIE_NAME);
-  res.json({ ok: true });
-});
-
-router.get("/me", (req, res) => {
-  const token = req.cookies ? req.cookies[auth.COOKIE_NAME] : null;
-  res.json({ authenticated: auth.isValidSession(token) });
-});
-
-// A partir daqui, todas as rotas exigem sessão de admin válida.
-router.use(auth.requireAdmin);
 
 router.post("/scrape", async (req, res) => {
   const { url } = req.body || {};

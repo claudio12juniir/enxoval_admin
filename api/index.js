@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const adminRoutes = require("../routes/admin");
 const publicRoutes = require("../routes/public");
 
@@ -10,10 +9,13 @@ const publicRoutes = require("../routes/public");
 // listen() nele. Não serve nenhum arquivo estático — index.html, admin.css,
 // admin.js e css/style.css são servidos direto pela Vercel como arquivos
 // estáticos (zero configuração, sem passar por esta função).
+//
+// Sem autenticação de propósito: o painel não pede senha. A "proteção" é só
+// o link não ser divulgado (veja README) — quem tiver o endereço consegue
+// editar o catálogo.
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser());
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/public", publicRoutes);

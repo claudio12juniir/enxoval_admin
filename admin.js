@@ -27,52 +27,6 @@ async function api(path, options = {}) {
   return data;
 }
 
-function showView(authenticated) {
-  el("loginView").hidden = authenticated;
-  el("dashboardView").hidden = !authenticated;
-}
-
-async function checkSession() {
-  try {
-    const { authenticated } = await api("/me");
-    showView(authenticated);
-    if (authenticated) {
-      loadCategorias();
-      loadProducts();
-    }
-  } catch {
-    showView(false);
-  }
-}
-
-function setupLogin() {
-  el("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const errorEl = el("loginError");
-    errorEl.hidden = true;
-    try {
-      await api("/login", {
-        method: "POST",
-        body: JSON.stringify({ password: el("password").value }),
-      });
-      el("password").value = "";
-      showView(true);
-      loadCategorias();
-      loadProducts();
-    } catch (err) {
-      errorEl.textContent = err.message;
-      errorEl.hidden = false;
-    }
-  });
-}
-
-function setupLogout() {
-  el("logoutBtn").addEventListener("click", async () => {
-    await api("/logout", { method: "POST" });
-    showView(false);
-  });
-}
-
 async function loadCategorias() {
   categoriasCache = await api("/categorias");
   const select = el("category");
@@ -223,7 +177,6 @@ function fillForm(data) {
   el("description").value = data.description || "";
   el("bullets").value = (data.bullets || []).join("\n");
   el("video").value = data.video || "";
-  el("url").value = data.url || "";
   galleryImages = data.images && data.images.length ? [...data.images] : data.image ? [data.image] : [];
   renderGallery();
   updateVideoPreview();
@@ -302,7 +255,7 @@ function setupForm() {
         description: el("description").value.trim() || null,
         bullets: el("bullets").value.split("\n").map((s) => s.trim()).filter(Boolean),
         video: el("video").value.trim() || null,
-        url: el("url").value.trim(),
+        url: el("amazonUrl").value.trim(),
         images: galleryImages,
         image: galleryImages[0] || null,
         category,
@@ -329,13 +282,12 @@ function setupViewSiteLink() {
 
 document.addEventListener("DOMContentLoaded", () => {
   setupViewSiteLink();
-  setupLogin();
-  setupLogout();
   setupCategorySelect();
   setupAddImage();
   setupVideoPreview();
   setupFetch();
   setupForm();
   setupCancelEdit();
-  checkSession();
+  loadCategorias();
+  loadProducts();
 });

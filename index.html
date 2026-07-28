@@ -13,27 +13,13 @@
 </head>
 <body class="admin-body">
 
-  <!-- Tela de login -->
-  <section class="admin-auth" id="loginView">
-    <form class="admin-auth__card" id="loginForm">
-      <p class="eyebrow">Enxoval</p>
-      <h1>Painel admin</h1>
-      <p class="admin-auth__hint">Acesso restrito. Faça login para gerenciar o catálogo.</p>
-      <label for="password">Senha</label>
-      <input type="password" id="password" name="password" autocomplete="current-password" required />
-      <p class="admin-error" id="loginError" hidden></p>
-      <button type="submit" class="btn btn--primary">Entrar</button>
-    </form>
-  </section>
-
   <!-- Painel -->
-  <div class="admin-dashboard" id="dashboardView" hidden>
+  <div class="admin-dashboard" id="dashboardView">
     <header class="admin-header">
       <div class="container admin-header__inner">
         <p class="logo">Enxoval <span>· admin</span></p>
         <div class="admin-header__actions">
           <a href="#" id="viewSiteLink" target="_blank" rel="noopener" class="btn btn--ghost btn--small">Ver site</a>
-          <button type="button" class="btn btn--ghost btn--small" id="logoutBtn">Sair</button>
         </div>
       </div>
     </header>
@@ -45,10 +31,11 @@
         <p class="admin-panel__hint">
           Cole o link do produto na Amazon e clique em <strong>Buscar dados</strong>. Imagem, descrição,
           vídeo e preço são preenchidos automaticamente sempre que a Amazon permitir — revise antes de salvar.
+          Esse mesmo link é o que fica salvo como link final do produto.
         </p>
 
         <div class="admin-fetch-row">
-          <input type="url" id="amazonUrl" placeholder="https://www.amazon.com.br/dp/..." />
+          <input type="url" id="amazonUrl" placeholder="https://www.amazon.com.br/dp/..." required />
           <button type="button" class="btn btn--primary" id="fetchBtn">Buscar dados</button>
         </div>
         <p class="admin-status" id="fetchStatus"></p>
@@ -99,11 +86,6 @@
               <label for="video">Vídeo (URL do .mp4 ou link do YouTube — opcional)</label>
               <input type="url" id="video" placeholder="https://..." />
               <div class="admin-video-preview" id="videoPreview"></div>
-            </div>
-
-            <div class="admin-form__field admin-form__field--wide">
-              <label for="url">Link final do produto na Amazon</label>
-              <input type="url" id="url" required />
             </div>
           </div>
 
